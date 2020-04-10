@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Blog.Models.Blog.Categoria;
+using Blog.Models.Blog.Postagem;
 
 namespace Blog
 {
@@ -23,6 +25,19 @@ namespace Blog
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            using(var databaseContext = new DatabaseContext())
+            {
+                databaseContext.Database.EnsureCreated();
+            }
+            
+            // Adicionar o serviço do banco de dados
+            services.AddDbContext<DatabaseContext>();
+            
+            // Adicionar os serviços de ORM das entidades do domínio
+            services.AddTransient<CategoriaOrmService>();
+            services.AddTransient<PostagemOrmService>();
+            
+            // Adicionar os serviços que possibilitam o funcionamento dos controllers e das views
             services.AddControllersWithViews();
         }
 
@@ -39,6 +54,7 @@ namespace Blog
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
