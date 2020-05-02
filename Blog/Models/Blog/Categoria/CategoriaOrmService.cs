@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
@@ -17,35 +18,35 @@ namespace Blog.Models.Blog.Categoria
         public List<CategoriaEntity> ObterCategorias()
         {
             // INÍCIO DOS EXEMPLOS
-            
+
             /**********************************************************************************************************/
             /*** OBTER UM ÚNICO OBJETO                                                                                */
             /**********************************************************************************************************/
-            
-            // First = Obter a primeira categoria retornada pela consulta
+
+            // First = Obter a primeira categoria retornada pela consulta, se não houver correspondencia retorna erro
             var primeiraCategoria = _databaseContext.Categorias.First();
-            
+
             // FirstOrDefault = Mesmo do First, porém retorna nulo caso não encontre nenhuma
             var primeiraCategoriaOuNulo = _databaseContext.Categorias.FirstOrDefault();
-            
-            // Single = Obter um único registro do banco de dados
+
+            // Single = Obter um único registro do banco de dados, se não houver correspondencia retorna erro
             var algumaCategoriaEspecifica = _databaseContext.Categorias.Single(c => c.Id == 3);
-            
+
             // SingleOrDefault = Mesmo do Sigle, porém retorna nulo caso não encontre nenhuma
             var algumaCategoriaOuNulo = _databaseContext.Categorias.SingleOrDefault(c => c.Id == 3);
-            
+
             // Find = Equivalente ao SingleOrDefault, porém fazendo uma busca por uma propriedade chave
             var encontrarCategoria = _databaseContext.Categorias.Find(3);
-            
-            
+
+
             /**********************************************************************************************************/
             /*** OBTER MÚLTIPLOS OBJETOS                                                                              */
             /**********************************************************************************************************/
-     
+
             // ToList
             var todasCategorias = _databaseContext.Categorias.ToList();
-            
-            
+
+
             /***********/
             /* FILTROS */
             /***********/
@@ -54,37 +55,38 @@ namespace Blog.Models.Blog.Categoria
             var categoriasComALetraMouL = _databaseContext.Categorias
                 .Where(c => c.Nome.StartsWith("M") || c.Nome.StartsWith("L"))
                 .ToList();
-            
-            
-         
+
+
+
             /*************/
             /* ORDENAÇÃO */
             /*************/
 
             var categoriasEmOrdemAlfabetica = _databaseContext.Categorias.OrderBy(c => c.Nome).ToList();
             var categoriasEmOrdemAlfabeticaInversa = _databaseContext.Categorias.OrderByDescending(c => c.Nome).ToList();
-            
-            
+
+
             /**************************/
             /* ENTIDADES RELACIONADAS */
             /**************************/
 
+            //incluindo lista de etiquetas nas categorias
             var categoriasESuasEtiquetas = _databaseContext.Categorias
                 .Include(c => c.Etiquetas)
                 .ToList();
-                
+
             var categoriasSemEtiquetas = _databaseContext.Categorias
-                .Where(c=> c.Etiquetas.Count == 0)
+                .Where(c => c.Etiquetas.Count == 0)
                 .ToList();
-            
+
             var categoriasComEtiquetas = _databaseContext.Categorias
-                .Where(c=> c.Etiquetas.Count > 0)
+                .Where(c => c.Etiquetas.Count > 0)
                 .ToList();
-            
+
             // FIM DOS EXEMPLOS
-            
-            
-            
+
+
+
             // Código de fato necessário para o método
             return _databaseContext.Categorias
                 .Include(c => c.Etiquetas)
@@ -101,7 +103,46 @@ namespace Blog.Models.Blog.Categoria
         public List<CategoriaEntity> PesquisarCategoriasPorNome(string nomeCategoria)
         {
             return _databaseContext.Categorias.Where(c => c.Nome.Contains(nomeCategoria)).ToList();
-            
+
+        }
+
+        public CategoriaEntity CriarCategoria(string nome)
+        {
+            var novaCategoria = new CategoriaEntity { Nome = nome };
+            _databaseContext.Categorias.Add(novaCategoria);
+            _databaseContext.SaveChanges();
+
+            return novaCategoria;
+        }
+
+        public CategoriaEntity EditarCategoria(int id, string nome)
+        {
+            var categoria = _databaseContext.Categorias.Find(id);
+
+            if (categoria == null)
+            {
+                throw new Exception("Categoria não encontrada!");
+            }
+
+            categoria.Nome = nome;
+            _databaseContext.SaveChanges();
+
+            return categoria;
+        }
+
+        public bool RemoverCategoria(int id)
+        {
+            var categoria = _databaseContext.Categorias.Find(id);
+
+            if (categoria == null)
+            {
+                throw new Exception("Categoria não encontrada!");
+            }
+
+            _databaseContext.Categorias.Remove(categoria);
+            _databaseContext.SaveChanges();
+
+            return true;
         }
     }
 }

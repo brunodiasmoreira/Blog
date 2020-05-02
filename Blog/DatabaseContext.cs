@@ -6,10 +6,12 @@ using Microsoft.EntityFrameworkCore;
 using Blog.Models.Blog.Postagem.Revisao;
 using Blog.Models.Blog.Postagem.Classificacao;
 using Blog.Models.Blog.Postagem.Comentario;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Blog.Models.ControleDeAcesso;
 
 namespace Blog
 {
-    public class DatabaseContext : DbContext
+    public class DatabaseContext : IdentityDbContext<Usuario, Papel, int>
     {
         public DbSet<CategoriaEntity> Categorias { get; set; }
         

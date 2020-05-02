@@ -1,15 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Blog.Models.Blog.Autor;
+using Blog.Models.Blog.Categoria;
+using Blog.Models.Blog.Etiqueta;
+using Blog.Models.Blog.Postagem;
+using Blog.Models.ControleDeAcesso;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Blog.Models.Blog.Categoria;
-using Blog.Models.Blog.Postagem;
 
 namespace Blog
 {
@@ -25,18 +23,24 @@ namespace Blog
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            using(var databaseContext = new DatabaseContext())
+
+            // Adicionar o serviço do mecanismo de controle de acesso
+            services.AddIdentity<Usuario, Papel>(options =>
             {
-                databaseContext.Database.EnsureCreated();
-            }
-            
+                options.User.RequireUniqueEmail = true;
+                options.Password.RequiredLength = 6;
+
+            }).AddEntityFrameworkStores<DatabaseContext>();
+
             // Adicionar o serviço do banco de dados
             services.AddDbContext<DatabaseContext>();
-            
-            // Adicionar os serviços de ORM das entidades do domínio
+
+            // Adicionar os serviços de ORM das entidades do domínio, AddTransient instancia novo obj a cada chamada
             services.AddTransient<CategoriaOrmService>();
             services.AddTransient<PostagemOrmService>();
-            
+            services.AddTransient<AutorOrmService>();
+            services.AddTransient<EtiquetaOrmService>();
+
             // Adicionar os serviços que possibilitam o funcionamento dos controllers e das views
             services.AddControllersWithViews();
         }
@@ -58,16 +62,47 @@ namespace Blog
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
+
+
+            //Configuração de rotas
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
+
 
             app.UseEndpoints(endpoints =>
             {
+                /*
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+                */
+
+                // Rotas da Área Comum
+                endpoints.MapControllerRoute(
+                    name: "comum",
+                    pattern: "/",
+                    defaults: new { controller = "Home", action = "Index" }
+                );
+
+                // Rotas da Área Administrativa
+                endpoints.MapControllerRoute(
+                    name: "admin.categorias",
+                    pattern: "admin/categorias/{action}/{id?}",
+                    defaults: new { controller = "AdminCategorias", action = "Listar" }
+                );
+
+                /*
+                endpoints.MapControllerRoute(
+                    name: "admin.autores",
+                    pattern: "admin/autores/{action}/{id?}",
+                    defaults: new { controller = "AdminAutores", action = "Listar"}
+                );
+                */
             });
+
+
         }
     }
 }

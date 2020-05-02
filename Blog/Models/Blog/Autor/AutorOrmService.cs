@@ -7,16 +7,66 @@ namespace Blog.Models.Blog.Autor
 {
     public class AutorOrmService
     {
-        private readonly DatabaseContext db;
+        private readonly DatabaseContext _databaseContext;
 
-        public AutorOrmService(DatabaseContext db)
+        public AutorOrmService(DatabaseContext databaseContext)
         {
-            this.db = db;
+            _databaseContext = databaseContext;
         }
 
-        public List<AutorEntity> GetAll()
+        public List<AutorEntity> ObterAutores()
         {
-            return this.db.Autores.ToList();
+            return _databaseContext.Autores.ToList();
+        }
+
+        public AutorEntity ObterAutorPorId(int idAutor)
+        {
+            var autor = _databaseContext.Autores.Find(idAutor);
+
+            return autor;
+        }
+
+        public List<AutorEntity> PesquisarAutoresPorNome(string nomeAutor)
+        {
+            return _databaseContext.Autores.Where(c => c.Nome.Contains(nomeAutor)).ToList();
+        }
+        public AutorEntity CriarAutor(string nome)
+        {
+            var novoAutor = new AutorEntity { Nome = nome };
+            _databaseContext.Autores.Add(novoAutor);
+            _databaseContext.SaveChanges();
+
+            return novoAutor;
+        }
+
+        public AutorEntity EditarAutor(int id, string nome)
+        {
+            var autor = _databaseContext.Autores.Find(id);
+
+            if (autor == null)
+            {
+                throw new Exception("Autor não encontrada!");
+            }
+
+            autor.Nome = nome;
+            _databaseContext.SaveChanges();
+
+            return autor;
+        }
+
+        public bool RemoverAutor(int id)
+        {
+            var autor = _databaseContext.Autores.Find(id);
+
+            if (autor == null)
+            {
+                throw new Exception("Autor não encontrada!");
+            }
+
+            _databaseContext.Autores.Remove(autor);
+            _databaseContext.SaveChanges();
+
+            return true;
         }
     }
 }
