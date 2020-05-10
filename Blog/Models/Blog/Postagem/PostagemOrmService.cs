@@ -30,7 +30,7 @@ namespace Blog.Models.Blog.Postagem
             return _databaseContext.Postagens.OrderByDescending(p => p.Comentarios.Count).ToList();
         }
 
-        public PostagemEntity CriarPostagem(string titulo, string descricao, AutorEntity autor, CategoriaEntity categoria)
+        public PostagemEntity CriarPostagem(string titulo, string descricao, AutorEntity autor, CategoriaEntity categoria, DateTime dataPostagem)
         {
             var novaPostagem = new PostagemEntity { Titulo = titulo, Descricao = descricao, Autor = autor, Categoria = categoria };
             _databaseContext.Postagens.Add(novaPostagem);
@@ -39,7 +39,7 @@ namespace Blog.Models.Blog.Postagem
             return novaPostagem;
         }
 
-        public PostagemEntity EditarPostagem(int id, string titulo)
+        public PostagemEntity EditarPostagem(int id, string titulo, string descricao, AutorEntity autor, CategoriaEntity categoria, DateTime dataPostagem)
         {
             var postagem = _databaseContext.Postagens.Find(id);
 
