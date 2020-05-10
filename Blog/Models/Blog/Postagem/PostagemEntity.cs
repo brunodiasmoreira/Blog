@@ -5,21 +5,24 @@ using Blog.Models.Blog.Postagem.Revisao;
 using System.ComponentModel.DataAnnotations;
 using Blog.Models.Blog.Postagem.Classificacao;
 using Blog.Models.Blog.Postagem.Comentario;
+using System;
 
 namespace Blog.Models.Blog.Postagem
 {
     public class PostagemEntity
     {
-        [Key] 
+        [Key]
         public int Id { get; set; }
 
-        [MaxLength(128)] 
-        [Required] 
+        [MaxLength(128)]
+        [Required]
         public string Titulo { get; set; }
-        
+
         [MaxLength(640)]
         [Required]
         public string Descricao { get; set; }
+
+        public DateTime DataPostagem { get; set; }
 
         public AutorEntity Autor { get; set; }
 

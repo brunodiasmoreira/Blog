@@ -17,73 +17,73 @@ namespace Blog.Models.Blog.Categoria
 
         public List<CategoriaEntity> ObterCategorias()
         {
-            // INÍCIO DOS EXEMPLOS
+            //// INÍCIO DOS EXEMPLOS
 
-            /**********************************************************************************************************/
-            /*** OBTER UM ÚNICO OBJETO                                                                                */
-            /**********************************************************************************************************/
+            ///**********************************************************************************************************/
+            ///*** OBTER UM ÚNICO OBJETO                                                                                */
+            ///**********************************************************************************************************/
 
-            // First = Obter a primeira categoria retornada pela consulta, se não houver correspondencia retorna erro
-            var primeiraCategoria = _databaseContext.Categorias.First();
+            //// First = Obter a primeira categoria retornada pela consulta, se não houver correspondencia retorna erro
+            //var primeiraCategoria = _databaseContext.Categorias.First();
 
-            // FirstOrDefault = Mesmo do First, porém retorna nulo caso não encontre nenhuma
-            var primeiraCategoriaOuNulo = _databaseContext.Categorias.FirstOrDefault();
+            //// FirstOrDefault = Mesmo do First, porém retorna nulo caso não encontre nenhuma
+            //var primeiraCategoriaOuNulo = _databaseContext.Categorias.FirstOrDefault();
 
-            // Single = Obter um único registro do banco de dados, se não houver correspondencia retorna erro
-            var algumaCategoriaEspecifica = _databaseContext.Categorias.Single(c => c.Id == 3);
+            //// Single = Obter um único registro do banco de dados, se não houver correspondencia retorna erro
+            //var algumaCategoriaEspecifica = _databaseContext.Categorias.Single(c => c.Id == 3);
 
-            // SingleOrDefault = Mesmo do Sigle, porém retorna nulo caso não encontre nenhuma
-            var algumaCategoriaOuNulo = _databaseContext.Categorias.SingleOrDefault(c => c.Id == 3);
+            //// SingleOrDefault = Mesmo do Sigle, porém retorna nulo caso não encontre nenhuma
+            //var algumaCategoriaOuNulo = _databaseContext.Categorias.SingleOrDefault(c => c.Id == 3);
 
-            // Find = Equivalente ao SingleOrDefault, porém fazendo uma busca por uma propriedade chave
-            var encontrarCategoria = _databaseContext.Categorias.Find(3);
-
-
-            /**********************************************************************************************************/
-            /*** OBTER MÚLTIPLOS OBJETOS                                                                              */
-            /**********************************************************************************************************/
-
-            // ToList
-            var todasCategorias = _databaseContext.Categorias.ToList();
+            //// Find = Equivalente ao SingleOrDefault, porém fazendo uma busca por uma propriedade chave
+            //var encontrarCategoria = _databaseContext.Categorias.Find(3);
 
 
-            /***********/
-            /* FILTROS */
-            /***********/
+            ///**********************************************************************************************************/
+            ///*** OBTER MÚLTIPLOS OBJETOS                                                                              */
+            ///**********************************************************************************************************/
 
-            var categoriasComALetraG = _databaseContext.Categorias.Where(c => c.Nome.StartsWith("G")).ToList();
-            var categoriasComALetraMouL = _databaseContext.Categorias
-                .Where(c => c.Nome.StartsWith("M") || c.Nome.StartsWith("L"))
-                .ToList();
+            //// ToList
+            //var todasCategorias = _databaseContext.Categorias.ToList();
 
 
+            ///***********/
+            ///* FILTROS */
+            ///***********/
 
-            /*************/
-            /* ORDENAÇÃO */
-            /*************/
-
-            var categoriasEmOrdemAlfabetica = _databaseContext.Categorias.OrderBy(c => c.Nome).ToList();
-            var categoriasEmOrdemAlfabeticaInversa = _databaseContext.Categorias.OrderByDescending(c => c.Nome).ToList();
+            //var categoriasComALetraG = _databaseContext.Categorias.Where(c => c.Nome.StartsWith("G")).ToList();
+            //var categoriasComALetraMouL = _databaseContext.Categorias
+            //    .Where(c => c.Nome.StartsWith("M") || c.Nome.StartsWith("L"))
+            //    .ToList();
 
 
-            /**************************/
-            /* ENTIDADES RELACIONADAS */
-            /**************************/
 
-            //incluindo lista de etiquetas nas categorias
-            var categoriasESuasEtiquetas = _databaseContext.Categorias
-                .Include(c => c.Etiquetas)
-                .ToList();
+            ///*************/
+            ///* ORDENAÇÃO */
+            ///*************/
 
-            var categoriasSemEtiquetas = _databaseContext.Categorias
-                .Where(c => c.Etiquetas.Count == 0)
-                .ToList();
+            //var categoriasEmOrdemAlfabetica = _databaseContext.Categorias.OrderBy(c => c.Nome).ToList();
+            //var categoriasEmOrdemAlfabeticaInversa = _databaseContext.Categorias.OrderByDescending(c => c.Nome).ToList();
 
-            var categoriasComEtiquetas = _databaseContext.Categorias
-                .Where(c => c.Etiquetas.Count > 0)
-                .ToList();
 
-            // FIM DOS EXEMPLOS
+            ///**************************/
+            ///* ENTIDADES RELACIONADAS */
+            ///**************************/
+
+            ////incluindo lista de etiquetas nas categorias
+            //var categoriasESuasEtiquetas = _databaseContext.Categorias
+            //    .Include(c => c.Etiquetas)
+            //    .ToList();
+
+            //var categoriasSemEtiquetas = _databaseContext.Categorias
+            //    .Where(c => c.Etiquetas.Count == 0)
+            //    .ToList();
+
+            //var categoriasComEtiquetas = _databaseContext.Categorias
+            //    .Where(c => c.Etiquetas.Count > 0)
+            //    .ToList();
+
+            //// FIM DOS EXEMPLOS
 
 
 
