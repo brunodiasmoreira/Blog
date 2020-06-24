@@ -46,6 +46,27 @@
     </ItemGroup>
 
     <ItemGroup>
+      <None Include="Views\AdminAutores\Criar.cshtml" />
+      <None Include="Views\AdminAutores\Detalhar.cshtml" />
+      <None Include="Views\AdminAutores\Editar.cshtml" />
+      <None Include="Views\AdminAutores\Listar.cshtml" />
+      <None Include="Views\AdminAutores\Remover.cshtml" />
+      <None Include="Views\AdminEtiquetas\Criar.cshtml" />
+      <None Include="Views\AdminEtiquetas\Detalhar.cshtml" />
+      <None Include="Views\AdminEtiquetas\Editar.cshtml" />
+      <None Include="Views\AdminEtiquetas\Listar.cshtml" />
+      <None Include="Views\AdminEtiquetas\Remover.cshtml" />
+      <None Include="Views\AdminPostagens\Criar.cshtml" />
+      <None Include="Views\AdminPostagens\Detalhar.cshtml" />
+      <None Include="Views\AdminPostagens\Editar.cshtml" />
+      <None Include="Views\AdminPostagens\Listar.cshtml" />
+      <None Include="Views\AdminPostagens\Remover.cshtml" />
+      <None Include="Views\Admin\Painel.cshtml" />
+      <None Include="Views\ControledeAcesso\Login.cshtml" />
+      <None Include="Views\ControledeAcesso\Registrar.cshtml" />
+    </ItemGroup>
+
+    <ItemGroup>
       <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.2" />
       <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.2" />
       <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.2">

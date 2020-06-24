@@ -1,5 +1,7 @@
 ﻿using Blog.Models.Blog.Categoria;
 using Blog.RequestModels.AdminCategorias;
+using Blog.ViewModels.Admin;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -8,12 +10,13 @@ using System.Threading.Tasks;
 
 namespace Blog.Controllers.Admin
 {
+    [Authorize]
     public class AdminCategoriasController : Controller
     {
         private readonly CategoriaOrmService _categoriaOrmService;
 
         public AdminCategoriasController(
-            CategoriaOrmService categoriaOrmService
+          CategoriaOrmService categoriaOrmService
         )
         {
             _categoriaOrmService = categoriaOrmService;
@@ -22,11 +25,26 @@ namespace Blog.Controllers.Admin
         [HttpGet]
         public IActionResult Listar()
         {
-            return View();
+            AdminCategoriasListarViewModel model = new AdminCategoriasListarViewModel();
+
+            // Obter as Categorias
+            var listaCategorias = _categoriaOrmService.ObterCategorias();
+
+            // Alimentar o model com as categorias que serão listadas
+            foreach (var categoriaEntity in listaCategorias)
+            {
+                var categoriaAdminEtiquetas = new CategoriaAdminCategorias();
+                categoriaAdminEtiquetas.Id = categoriaEntity.Id;
+                categoriaAdminEtiquetas.Nome = categoriaEntity.Nome;
+
+                model.Categorias.Add(categoriaAdminEtiquetas);
+            }
+
+            return View(model);
         }
 
         [HttpGet]
-        public IActionResult Detalhar()
+        public IActionResult Detalhar(int id)
         {
             return View();
         }
@@ -34,9 +52,25 @@ namespace Blog.Controllers.Admin
         [HttpGet]
         public IActionResult Criar()
         {
-            ViewBag.erro = TempData["erro-msg"];
+            AdminCategoriasCriarViewModel model = new AdminCategoriasCriarViewModel();
 
-            return View();
+            // Define possível erro no processamento (vindo do post do criar)
+            model.Erro = (string)TempData["erro-msg"];
+
+            // Obter as Categorias
+            var listaCategorias = _categoriaOrmService.ObterCategorias();
+
+            // Alimentar o model com as categorias que serão colocadas no <select> do formulário
+            foreach (var categoriaEntity in listaCategorias)
+            {
+                var categoriaAdminetiquetas = new CategoriaAdminCategorias();
+                categoriaAdminetiquetas.Id = categoriaEntity.Id;
+                categoriaAdminetiquetas.Nome = categoriaEntity.Nome;
+
+                model.Categorias.Add(categoriaAdminetiquetas);
+            }
+
+            return View(model);
         }
 
         [HttpPost]
@@ -50,7 +84,7 @@ namespace Blog.Controllers.Admin
             }
             catch (Exception exception)
             {
-                TempData["erro-msg"] = exception.Message;
+                TempData["error-msg"] = exception.Message;
                 return RedirectToAction("Criar");
             }
 
@@ -60,10 +94,24 @@ namespace Blog.Controllers.Admin
         [HttpGet]
         public IActionResult Editar(int id)
         {
-            ViewBag.id = id;
-            ViewBag.erro = TempData["erro-msg"];
+            AdminCategoriasEditarViewModel model = new AdminCategoriasEditarViewModel();
 
-            return View();
+            // Obter categoria a Editar
+            var categoriaAEditar = _categoriaOrmService.ObterCategoriaPorId(id);
+            if (categoriaAEditar == null)
+            {
+                return RedirectToAction("Listar");
+            }
+
+            // Define possível erro no processamento (vindo do post do criar)
+            model.Erro = (string)TempData["erro-msg"];
+
+            // Alimentar o model com os dados da categoria a ser editada
+            model.IdCategoria = categoriaAEditar.Id;
+            model.NomeCategoria = categoriaAEditar.Nome;
+            model.TituloPagina += model.NomeCategoria;
+
+            return View(model);
         }
 
         [HttpPost]
@@ -105,11 +153,12 @@ namespace Blog.Controllers.Admin
             }
             catch (Exception exception)
             {
-                TempData["erro-msg"] = exception.Message;
+                TempData["Erro-msg"] = exception.Message;
                 return RedirectToAction("Remover", new { id = id });
             }
 
             return RedirectToAction("Listar");
         }
+
     }
 }

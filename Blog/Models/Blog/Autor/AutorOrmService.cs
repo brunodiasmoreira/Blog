@@ -17,19 +17,22 @@ namespace Blog.Models.Blog.Autor
         public List<AutorEntity> ObterAutores()
         {
             return _databaseContext.Autores.ToList();
+
         }
 
         public AutorEntity ObterAutorPorId(int idAutor)
         {
-            var autor = _databaseContext.Autores.Find(idAutor);
+            var autores = _databaseContext.Autores.Find(idAutor);
 
-            return autor;
+            return autores;
         }
 
-        public List<AutorEntity> PesquisarAutoresPorNome(string nomeAutor)
+        public List<AutorEntity> PesquisarAutorPorNome(string nomeAutor)
         {
             return _databaseContext.Autores.Where(c => c.Nome.Contains(nomeAutor)).ToList();
+
         }
+
         public AutorEntity CriarAutor(string nome)
         {
             var novoAutor = new AutorEntity { Nome = nome };
@@ -37,17 +40,20 @@ namespace Blog.Models.Blog.Autor
             _databaseContext.SaveChanges();
 
             return novoAutor;
+
         }
 
         public AutorEntity EditarAutor(int id, string nome)
         {
+            // obter o autor para edição
             var autor = _databaseContext.Autores.Find(id);
 
             if (autor == null)
             {
-                throw new Exception("Autor não encontrada!");
+                throw new Exception("Autor não encontrado");
             }
 
+            // Atualizar os dados do autor
             autor.Nome = nome;
             _databaseContext.SaveChanges();
 
@@ -56,17 +62,20 @@ namespace Blog.Models.Blog.Autor
 
         public bool RemoverAutor(int id)
         {
+            // obter o autor para remoção
             var autor = _databaseContext.Autores.Find(id);
 
             if (autor == null)
             {
-                throw new Exception("Autor não encontrada!");
+                throw new Exception("Autor não encontrado");
             }
 
+            // Remover o autor
             _databaseContext.Autores.Remove(autor);
             _databaseContext.SaveChanges();
 
             return true;
+
         }
     }
 }

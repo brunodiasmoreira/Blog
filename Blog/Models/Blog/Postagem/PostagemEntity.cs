@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using Blog.Models.Blog.Postagem.Classificacao;
 using Blog.Models.Blog.Postagem.Comentario;
 using System;
+using System.Linq;
 
 namespace Blog.Models.Blog.Postagem
 {
@@ -22,11 +23,11 @@ namespace Blog.Models.Blog.Postagem
         [Required]
         public string Descricao { get; set; }
 
-        public DateTime DataPostagem { get; set; }
-
         public AutorEntity Autor { get; set; }
 
         public CategoriaEntity Categoria { get; set; }
+
+        public DateTime DataPostagem { get; set; }
 
         public List<PostagemEtiquetaEntity> PostagensEtiquetas { get; set; }
 
@@ -43,6 +44,11 @@ namespace Blog.Models.Blog.Postagem
             Revisoes = new List<RevisaoEntity>();
             Comentarios = new List<ComentarioEntity>();
             Classificacoes = new List<ClassificacaoEntity>();
+        }
+
+        public RevisaoEntity ObterUltimaRevisao()
+        {
+            return Revisoes.OrderByDescending(r => r.Versao).FirstOrDefault();
         }
     }
 }
