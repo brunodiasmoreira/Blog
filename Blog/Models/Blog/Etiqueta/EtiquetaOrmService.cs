@@ -30,61 +30,55 @@ namespace Blog.Models.Blog.Etiqueta
             return etiqueta;
         }
 
-        public List<EtiquetaEntity> PesquisarEtiquetaPorNome(string nomeEtiqueta)
+        public List<EtiquetaEntity> PesquisarEtiquetasPorNome(string nomeEtiqueta)
         {
             return _databaseContext.Etiquetas.Where(c => c.Nome.Contains(nomeEtiqueta)).ToList();
-
         }
 
         public EtiquetaEntity CriarEtiqueta(string nome, int idCategoria)
         {
-            // Verifica a existencia do Nome da Etiqueta
+            // Verificar se um nome é NULL
             if (nome == null)
             {
-                throw new Exception("O nome para a Etiqueta não foi informado!");
+                throw new Exception("A Etiqueta precisa de um nome!");
             }
 
-            // Verifica a existencia da Categoria da Etiqueta
+            // Verificar existência da Categoria da Etiqueta
             var categoria = _databaseContext.Categorias.Find(idCategoria);
-
             if (categoria == null)
             {
-                throw new Exception("A Categoria informada para a Etiqueta não existe!");
+                throw new Exception("A Categoria informada para a Etiqueta não foi encontrada!");
             }
 
-            //Criar nova Etiqueta
+            // Criar nova Etiqueta
             var novaEtiqueta = new EtiquetaEntity
             {
                 Nome = nome,
                 Categoria = categoria
             };
-
             _databaseContext.Etiquetas.Add(novaEtiqueta);
             _databaseContext.SaveChanges();
 
             return novaEtiqueta;
-
         }
 
         public EtiquetaEntity EditarEtiqueta(int id, string nome, int idCategoria)
         {
-            // obter a etiqueta para edição
+            // Obter Etiqueta a Editar
             var etiqueta = _databaseContext.Etiquetas.Find(id);
-
             if (etiqueta == null)
             {
-                throw new Exception("Etiqueta não encontrada");
+                throw new Exception("Etiqueta não encontrada!");
             }
 
-            // Verifica  existencia da Categoria da Etiqueta
+            // Verificar existência da Categoria da Etiqueta
             var categoria = _databaseContext.Categorias.Find(idCategoria);
-
             if (categoria == null)
             {
-                throw new Exception("A Categoria informada para a Etiqueta não existe!");
+                throw new Exception("A Categoria informada para a Etiqueta não foi encontrada!");
             }
 
-            // Atualizar os dados da etiqueta
+            // Atualizar dados da Etiqueta
             etiqueta.Nome = nome;
             etiqueta.Categoria = categoria;
             _databaseContext.SaveChanges();
@@ -94,20 +88,18 @@ namespace Blog.Models.Blog.Etiqueta
 
         public bool RemoverEtiqueta(int id)
         {
-            // obter a etiqueta para remoção
+            // Obter Etiqueta a Remover
             var etiqueta = _databaseContext.Etiquetas.Find(id);
-
             if (etiqueta == null)
             {
-                throw new Exception("Etiqueta não encontrada");
+                throw new Exception("Etiqueta não encontrada!");
             }
 
-            // Remover a etiqueta
+            // Remover Etiqueta
             _databaseContext.Etiquetas.Remove(etiqueta);
             _databaseContext.SaveChanges();
 
             return true;
-
         }
     }
 }

@@ -7,9 +7,9 @@ namespace Blog.Models.Blog.Postagem
     {
         [Key]
         public int Id { get; set; }
-        
+
         public PostagemEntity Postagem { get; set; }
-        
+
         public EtiquetaEntity Etiqueta { get; set; }
     }
 }

@@ -11,10 +11,10 @@ namespace Blog.ViewModels.Admin
 
         public ICollection<CategoriaAdminEtiquetas> Categorias { get; set; }
 
+
         public AdminEtiquetasCriarViewModel()
         {
             TituloPagina = "Criar nova Etiqueta";
-
             Categorias = new List<CategoriaAdminEtiquetas>();
         }
     }
@@ -22,7 +22,6 @@ namespace Blog.ViewModels.Admin
     public class CategoriaAdminEtiquetas
     {
         public int IdCategoria { get; set; }
-
         public string NomeCategoria { get; set; }
     }
 }

@@ -1,5 +1,34 @@
-﻿@{
-    ViewData["Title"] = "Listar";
-}
+﻿@using Blog.ViewModels.Admin
+@model Blog.ViewModels.Admin.AdminCategoriasListarViewModel
 
-<h1>Listar</h1>
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">Listagem de Categorias</h3>
+
+    </div>
+    <div class="card-body">
+        <a class="btn btn-primary mb-3" href="/admin/categorias/criar">Criar nova Categoria</a>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Nome</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (CategoriaAdminCategorias categoria in @Model.Categorias)
+                {
+                    <tr>
+                        <td>@categoria.Id</td>
+                        <td>@categoria.Nome</td>
+                        <td>
+                            <a class="btn btn-default btn-xs" href="/admin/categorias/editar/@categoria.Id">Editar</a>
+                            <a class="btn btn-danger btn-xs" href="/admin/categorias/remover/@categoria.Id">Remover</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

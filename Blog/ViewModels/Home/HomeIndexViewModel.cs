@@ -3,15 +3,11 @@ using System.Collections.Generic;
 
 namespace Blog.ViewModels.Home
 {
-    public class HomeIndexViewModel
+    public class HomeIndexViewModel : ViewModelAreaComum
     {
-        public string TituloPagina { get; set; }
-
         public ICollection<PostagemHomeIndex> Postagens { get; set; }
 
         public ICollection<CategoriaHomeIndex> Categorias { get; set; }
-
-        public ICollection<PostagemHomeIndex> DataPostagem { get; set; }
 
         public ICollection<EtiquetaHomeIndex> Etiquetas { get; set; }
 
@@ -20,6 +16,7 @@ namespace Blog.ViewModels.Home
 
         public HomeIndexViewModel()
         {
+            TituloPagina = "Blog";
             Postagens = new List<PostagemHomeIndex>();
             Categorias = new List<CategoriaHomeIndex>();
             Etiquetas = new List<EtiquetaHomeIndex>();
@@ -29,8 +26,6 @@ namespace Blog.ViewModels.Home
 
     public class PostagemHomeIndex
     {
-        internal DateTime DataPostagem;
-
         public string Titulo { get; set; }
         public string Data { get; set; }
         public string Descricao { get; set; }

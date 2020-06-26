@@ -5,11 +5,6 @@
     <div class="card-header">
         <h3 class="card-title">Criar nova Postagem</h3>
 
-        <div class="card-tools">
-            <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
-                <i class="fas fa-minus"></i>
-            </button>
-        </div>
     </div>
     <div class="card-body">
         @if (@Model.Erro != null)
@@ -21,46 +16,51 @@
             </div>
         }
 
-
         <form action="/admin/postagens/criar" method="post">
             <div class="form-group mb-3">
-                <label for="nome">Titulo</label>
-                <input name="nome" id="nome" type="text" class="form-control">
+                <label for="Titulo">Titulo</label>
+                <input id="Titulo" name="Titulo" type="text" class="form-control">
             </div>
             <div class="form-group mb-3">
-                <label for="descricao">Descrição</label>
-                <input name="descricao" id="descricao" type="text" class="form-control">
+                <label for="Descricao">Descricao</label>
+                <input id="Descricao" name="Descricao" type="text" class="form-control">
             </div>
-            <div class="form-group mb-3">
-                <label for="data">Data da Postagem</label>
-                <input name="data" id="data" type="date" class="form-control">
-            </div>
+            <div class="row-cols-3">
+                <div class="form-group mb-3">
+                    <label for="IdAutor">Autor</label>
+                    <select id="IdAutor" name="IdAutor" class="form-control">
+                        <option value="">Selecione</option>
+                        @foreach (AutorAdminPostagens autor in Model.AutoresPostagem)
+                        {
+                            <option value="@autor.IdAutor">@autor.NomeAutor</option>
+                        }
+                    </select>
+                </div>
 
-
-            <div class="form-group mb-3">
-                <label for="IdCategoria">Categoria</label>
-                <select id="IdCategoria" name="IdCategoria" class="form-control">
-                    <option value="">Selecione</option>
-                    @foreach (CategoriaAdminPostagens categoria in Model.Categorias)
-                    {
-                        <option value="@categoria.IdCategorias">@categoria.NomeCategorias</option>
-                    }
-                </select>
+                <div class="form-group mb-3">
+                    <label for="IdCategoria">Categoria</label>
+                    <select id="IdCategoria" name="IdCategoria" class="form-control">
+                        <option value="">Selecione</option>
+                        @foreach (CategoriaAdminPostagens categoria in Model.CategoriasPostagem)
+                        {
+                            <option value="@categoria.IdCategoria">@categoria.NomeCategoria</option>
+                        }
+                    </select>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="DataExibicao">Data de Exibicao</label>
+                    <input id="DataExibicao" name="DataExibicao" type="date" class="form-control">
+                </div>
             </div>
             <div class="form-group mb-3">
-                <label for="IdAutor">Autor</label>
-                <select id="IdAutor" name="IdAutor" class="form-control">
-                    <option value="">Selecione</option>
-                    @foreach (AutorAdminPostagens autores in Model.Autores)
-                    {
-                        <option value="@autores.IdAutores">@autores.NomeAutores</option>
-                    }
-                </select>
+                <label for="Texto">Texto</label>
+                <textarea id="Texto" name="Texto" class="form-control"></textarea>
             </div>
-
             <div class="form-group mb-3">
                 <button type="submit" class="btn btn-primary btn-block">Criar</button>
-                <a class="mt-3" href="/admin/postagens">Cancelar</a>
+                <p class="text-center mt-3">
+                    <a href="/admin/postagens">Cancelar</a>
+                </p>
             </div>
         </form>
     </div>

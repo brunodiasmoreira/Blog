@@ -19,7 +19,6 @@ namespace Blog.Controllers
         private readonly CategoriaOrmService _categoriaOrmService;
         private readonly PostagemOrmService _postagemOrmService;
 
-
         public HomeController(
             ILogger<HomeController> logger,
             CategoriaOrmService categoriaOrmService,
@@ -35,6 +34,7 @@ namespace Blog.Controllers
         {
             // Instanciar a ViewModel
             HomeIndexViewModel model = new HomeIndexViewModel();
+            model.TituloPagina = "Página Home";
 
             // Alimentar a lista de postagens que serão exibidas na view
             List<PostagemEntity> listaPostagens = _postagemOrmService.ObterPostagens();
@@ -45,7 +45,6 @@ namespace Blog.Controllers
                 postagemHomeIndex.Titulo = postagem.Titulo;
                 postagemHomeIndex.Descricao = postagem.Descricao;
                 postagemHomeIndex.Categoria = postagem.Categoria.Nome;
-                postagemHomeIndex.DataPostagem = postagem.DataPostagem;
                 postagemHomeIndex.NumeroComentarios = postagem.Comentarios.Count.ToString();
                 postagemHomeIndex.PostagemId = postagem.Id.ToString();
 
@@ -82,15 +81,22 @@ namespace Blog.Controllers
             }
 
             // Alimentar a lista de postagens populares que serão exibidas na view
-            List<PostagemEntity> postagensPopulares = _postagemOrmService.ObterPostagensPopulares();
-            foreach (PostagemEntity postagemPopular in postagensPopulares)
+            // TODO Obter lista de postagens populares
+            List<PostagemEntity> listaPostagensPopulares = _postagemOrmService.ObterPostagensPopulares();
+            int count = 0;
+            foreach (PostagemEntity postagem in listaPostagensPopulares)
             {
-                model.PostagensPopulares.Add(new PostagemPopularHomeIndex()
+                PostagemPopularHomeIndex postagemPopularHomeIndex = new PostagemPopularHomeIndex();
+                postagemPopularHomeIndex.Titulo = postagem.Titulo;
+                postagemPopularHomeIndex.Categoria = postagem.Categoria.Nome;
+                postagemPopularHomeIndex.PostagemId = postagem.Id.ToString();
+
+                count++;
+
+                if (count <= 4)
                 {
-                    Categoria = postagemPopular.Categoria.Nome,
-                    PostagemId = postagemPopular.Id.ToString(),
-                    Titulo = postagemPopular.Titulo
-                });
+                    model.PostagensPopulares.Add(postagemPopularHomeIndex);
+                }
             }
 
             return View(model);

@@ -8,14 +8,10 @@ namespace Blog.ViewModels.Admin
     public class AdminCategoriasCriarViewModel : ViewModelAreaAdministrativa
     {
         public string Erro { get; set; }
-
-        public ICollection<CategoriaAdminCategorias> Categorias { get; set; }
-
         public AdminCategoriasCriarViewModel()
         {
-            TituloPagina = "Categorias - Administrador";
+            TituloPagina = "Criar nova categoria";
 
-            Categorias = new List<CategoriaAdminCategorias>();
         }
     }
 }

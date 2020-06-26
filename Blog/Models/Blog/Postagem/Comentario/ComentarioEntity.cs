@@ -1,4 +1,4 @@
-﻿using System;
+﻿    using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace Blog.Models.Blog.Postagem.Comentario
@@ -7,9 +7,9 @@ namespace Blog.Models.Blog.Postagem.Comentario
     {
         [Key]
         public int Id { get; set; }
-        
+
         public PostagemEntity Postagem { get; set; }
-        
+
         [Required]
         public string Texto { get; set; }
 
@@ -19,7 +19,7 @@ namespace Blog.Models.Blog.Postagem.Comentario
 
         [Required]
         public DateTime DataCriacao { get; set; }
-        
+
         public ComentarioEntity ComentarioPai { get; set; }
     }
 }

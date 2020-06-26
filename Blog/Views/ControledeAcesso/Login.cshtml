@@ -1,4 +1,5 @@
-﻿@model Blog.ViewModels.ControleDeAcesso.ControleDeAcessoLoginViewModel
+﻿
+@model Blog.ViewModels.ControleDeAcesso.ControleDeAcessoLoginViewModel
 
 <div class="card">
     <div class="card-body login-card-body">
@@ -24,14 +25,13 @@
 
         <form action="@Url.RouteUrl("controleDeAcesso", new {Action = "Login", RedirectUrl = @Model.Destino})" method="post">
             <div class="input-group mb-3">
-                <input id="usuario" name="usuario" type="email" class="form-control" placeholder="seunome@mail.com.br">
+                <input id="usuario" name="usuario" type="email" class="form-control" placeholder="email@mail.com.br">
                 <div class="input-group-append">
                     <div class="input-group-text">
                         <span class="fas fa-envelope"></span>
                     </div>
                 </div>
-            </div><br>
-
+            </div>
             <div class="input-group mb-3">
                 <input id="senha" name="senha" type="password" class="form-control">
                 <div class="input-group-append">
@@ -39,8 +39,7 @@
                         <span class="fas fa-lock"></span>
                     </div>
                 </div>
-            </div><br>
-
+            </div>
             <div class="row">
                 <div class="col-8">
                     <div class="icheck-primary">
@@ -49,20 +48,18 @@
                             Lembrar de mim
                         </label>
                     </div>
-                </div><br>
+                </div>
 
                 <div class="col-4">
                     <input type="hidden" name="destino" value="@Model.Destino">
                     <button type="submit" class="btn btn-primary btn-block">Entrar</button>
                 </div>
-            </div><br>         
-            
+            </div>
         </form>
 
         <p class="mb-1">
             <a href="#">Esqueci a senha</a>
         </p>
-
         <p class="mb-0">
             <a href="@Url.RouteUrl("controleDeAcesso", new {action = "Registrar"})" class="text-center">Registrar novo usuário</a>
         </p>

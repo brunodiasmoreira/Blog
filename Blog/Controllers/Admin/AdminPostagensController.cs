@@ -1,4 +1,7 @@
-﻿using Blog.Models.Blog.Postagem;
+﻿using Blog.Models.Blog.Autor;
+using Blog.Models.Blog.Categoria;
+using Blog.Models.Blog.Postagem;
+using Blog.Models.Blog.Postagem.Revisao;
 using Blog.RequestModels.AdminPostagens;
 using Blog.ViewModels.Admin;
 using Microsoft.AspNetCore.Authorization;
@@ -10,23 +13,48 @@ using System.Threading.Tasks;
 
 namespace Blog.Controllers.Admin
 {
-
     [Authorize]
     public class AdminPostagensController : Controller
     {
         private readonly PostagemOrmService _postagemOrmService;
+        private readonly CategoriaOrmService _categoriaOrmService;
+        private readonly AutorOrmService _autoresOrmService;
+        private readonly RevisaoOrmService _revisaoOrmService;
 
         public AdminPostagensController(
-            PostagemOrmService postagemOrmService
+            PostagemOrmService postagemOrmService,
+            CategoriaOrmService categoriaOrmService,
+            AutorOrmService autoresOrmService,
+            RevisaoOrmService revisaoOrmService
         )
         {
             _postagemOrmService = postagemOrmService;
+            _categoriaOrmService = categoriaOrmService;
+            _autoresOrmService = autoresOrmService;
+            _revisaoOrmService = revisaoOrmService;
         }
 
         [HttpGet]
         public IActionResult Listar()
         {
             AdminPostagensListarViewModel model = new AdminPostagensListarViewModel();
+
+            var listaPostagens = _postagemOrmService.ObterPostagens();
+
+            foreach (var postagemEntity in listaPostagens)
+            {
+                //var categoria = _categoriaOrmService.ObterCategoriaPorId(postagemEntity.Categoria.Id);
+                //var autor = _autoresOrmService.ObterAutorPorId(postagemEntity.Autor.Id);
+
+                var postagemAdminPostagens = new PostagemAdminPostagens();
+                postagemAdminPostagens.Id = postagemEntity.Id;
+                postagemAdminPostagens.Titulo = postagemEntity.Titulo;
+                postagemAdminPostagens.NomeAutor = postagemEntity.Autor.Nome;
+                postagemAdminPostagens.Categoria = postagemEntity.Categoria.Nome;
+                postagemAdminPostagens.DataExibição = postagemEntity.DataExibicao;
+
+                model.Postagens.Add(postagemAdminPostagens);
+            }
 
             return View(model);
         }
@@ -40,24 +68,55 @@ namespace Blog.Controllers.Admin
         [HttpGet]
         public IActionResult Criar()
         {
-            ViewBag.erro = TempData["erro-msg"];
+            AdminPostagensCriarViewModel model = new AdminPostagensCriarViewModel();
 
-            return View();
+            // Definir possível erro de processamento (vindo do post do criar)
+            model.Erro = (string)TempData["erro-msg"];
+
+            // Obter as Categorias
+            var listaCategorias = _categoriaOrmService.ObterCategorias();
+
+            // Alimentar o model com as categorias que serão colocadas no <select> do formulário
+            foreach (var categoriaEntity in listaCategorias)
+            {
+                var categoriaAdminPostagens = new CategoriaAdminPostagens();
+                categoriaAdminPostagens.IdCategoria = categoriaEntity.Id;
+                categoriaAdminPostagens.NomeCategoria = categoriaEntity.Nome;
+
+                model.CategoriasPostagem.Add(categoriaAdminPostagens);
+            }
+
+            // Obter os Autores
+            var listaAutores = _autoresOrmService.ObterAutores();
+
+            // Alimentar o model com as Autores que serão colocadas no <select> do formulário
+            foreach (var autorEntity in listaAutores)
+            {
+                var autorAdminPostagens = new AutorAdminPostagens();
+                autorAdminPostagens.IdAutor = autorEntity.Id;
+                autorAdminPostagens.NomeAutor = autorEntity.Nome;
+
+                model.AutoresPostagem.Add(autorAdminPostagens);
+            }
+
+            return View(model);
+
         }
 
         [HttpPost]
         public RedirectToActionResult Criar(AdminPostagemCriarRequestModel request)
         {
-            var titulo = request.Texto;
+            var titulo = request.Titulo;
             var descricao = request.Descricao;
             var idAutor = request.IdAutor;
             var idCategoria = request.IdCategoria;
             var texto = request.Texto;
-            var dataPostagem = DateTime.Parse(request.DataPostagem);
+            var dataExibicao = DateTime.Parse(request.DataExibicao);
+
 
             try
             {
-                _postagemOrmService.CriarPostagem(titulo, descricao, idAutor, idCategoria, texto, dataPostagem);
+                _postagemOrmService.CriarPostagem(titulo, descricao, idAutor, idCategoria, texto, dataExibicao);
             }
             catch (Exception exception)
             {
@@ -71,10 +130,26 @@ namespace Blog.Controllers.Admin
         [HttpGet]
         public IActionResult Editar(int id)
         {
-            ViewBag.id = id;
-            ViewBag.erro = TempData["erro-msg"];
+            AdminPostagensEditarViewModel model = new AdminPostagensEditarViewModel();
 
-            return View();
+            // Obter categoria a editar
+            var postagenAEditar = _postagemOrmService.ObterPostagemPorId(id);
+            if (postagenAEditar == null)
+            {
+                return RedirectToAction("Listar");
+            }
+
+            // Definir possível erro de processamento (vindo do post do criar)
+            model.Erro = (string)TempData["erro-msg"];
+
+            model.Id = postagenAEditar.Id;
+            model.IdCategoria = postagenAEditar.Categoria.Id;
+            model.Titulo = postagenAEditar.Titulo;
+            model.Descricao = postagenAEditar.Descricao;
+            model.Texto = postagenAEditar.Revisoes.ToString();
+            //model.TituloPagina += model.Titulo;
+
+            return View(model);
         }
 
         [HttpPost]
@@ -85,11 +160,11 @@ namespace Blog.Controllers.Admin
             var descricao = request.Descricao;
             var idCategoria = Convert.ToInt32(request.IdCategoria);
             var texto = request.Texto;
-            var dataPostagem = DateTime.Parse(request.DataPostagem);
+            var dataExibicao = DateTime.Parse(request.DataExibicao);
 
             try
             {
-                _postagemOrmService.EditarPostagem(id, titulo, descricao, idCategoria, texto, dataPostagem);
+                _postagemOrmService.EditarPostagem(id, titulo, descricao, idCategoria, texto, dataExibicao);
             }
             catch (Exception exception)
             {
@@ -127,4 +202,5 @@ namespace Blog.Controllers.Admin
             return RedirectToAction("Listar");
         }
     }
+
 }

@@ -17,10 +17,10 @@ namespace Blog.ViewModels.Admin
 
         public ICollection<CategoriaAdminEtiquetas> Categorias { get; set; }
 
+
         public AdminEtiquetasEditarViewModel()
         {
             TituloPagina = "Editar Etiqueta: ";
-
             Categorias = new List<CategoriaAdminEtiquetas>();
         }
     }

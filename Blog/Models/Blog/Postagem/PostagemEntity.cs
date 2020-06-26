@@ -12,22 +12,15 @@ namespace Blog.Models.Blog.Postagem
 {
     public class PostagemEntity
     {
-        [Key]
-        public int Id { get; set; }
+        [Key] public int Id { get; set; }
 
-        [MaxLength(128)]
-        [Required]
-        public string Titulo { get; set; }
+        [MaxLength(128)] [Required] public string Titulo { get; set; }
 
-        [MaxLength(640)]
-        [Required]
-        public string Descricao { get; set; }
+        [MaxLength(640)] [Required] public string Descricao { get; set; }
 
         public AutorEntity Autor { get; set; }
 
         public CategoriaEntity Categoria { get; set; }
-
-        public DateTime DataPostagem { get; set; }
 
         public List<PostagemEtiquetaEntity> PostagensEtiquetas { get; set; }
 
@@ -37,6 +30,7 @@ namespace Blog.Models.Blog.Postagem
 
         public ICollection<ClassificacaoEntity> Classificacoes { get; set; }
 
+        public DateTime DataExibicao { get; set; }
 
         public PostagemEntity()
         {

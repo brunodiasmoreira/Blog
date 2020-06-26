@@ -9,23 +9,19 @@ namespace Blog.ViewModels.Admin
     public class AdminPostagensListarViewModel : ViewModelAreaAdministrativa
     {
         public ICollection<PostagemAdminPostagens> Postagens { get; set; }
-
         public AdminPostagensListarViewModel()
         {
             TituloPagina = "Postagens - Administrador";
             Postagens = new List<PostagemAdminPostagens>();
         }
     }
+
     public class PostagemAdminPostagens
     {
-        public int IdPostagem { get; set; }
-
-        public string NomePostagem { get; set; }
-
-        public DateTime DataPostagem { get; set; }
-
-        public string NomeCategoria { get; set; }
-
+        public int Id { get; set; }
+        public string Titulo { get; set; }
         public string NomeAutor { get; set; }
+        public string Categoria { get; set; }
+        public DateTime DataExibição { get; set; }
     }
 }

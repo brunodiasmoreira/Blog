@@ -9,6 +9,15 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Content Remove="Views\Home\sobre.cshtml" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="Views\Home\htmlpage.html" />
+      <None Remove="Views\Home\sobre.html" />
+    </ItemGroup>
+
+    <ItemGroup>
       <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css" />
       <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css.map" />
       <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.min.css" />

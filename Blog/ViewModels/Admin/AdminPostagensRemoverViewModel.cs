@@ -7,17 +7,15 @@ namespace Blog.ViewModels.Admin
 {
     public class AdminPostagensRemoverViewModel : ViewModelAreaAdministrativa
     {
-        public int IdPostagem { get; set; }
+        public int IdEtiqueta { get; set; }
 
-        public string NomePostagem { get; set; }
-
-        public DateTime DataPostagem { get; set; }
+        public string NomeEtiqueta { get; set; }
 
         public string Erro { get; set; }
 
         public AdminPostagensRemoverViewModel()
         {
-            TituloPagina = "Remover Postagem ";
+            TituloPagina = "Remover Postagem: ";
         }
     }
 }

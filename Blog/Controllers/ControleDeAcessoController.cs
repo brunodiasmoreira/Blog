@@ -120,7 +120,7 @@ namespace Blog.Controllers.Admin
             {
                 await _controleDeAcessoService.RegistrarUsuario(email, apelido, senha);
 
-                TempData["registrar-msg"] = "Usuário Registrado com Secesso!";
+                TempData["registrar-msg"] = "Usuário Registrado!";
                 return RedirectToAction("Login");
 
             }

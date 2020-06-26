@@ -49,7 +49,7 @@ namespace Blog.Controllers.Admin
         }
 
         [HttpGet]
-        public IActionResult Detalhar()
+        public IActionResult Detalhar(int id)
         {
             return View();
         }
@@ -59,7 +59,7 @@ namespace Blog.Controllers.Admin
         {
             AdminEtiquetasCriarViewModel model = new AdminEtiquetasCriarViewModel();
 
-            // Define possível erro no processamento (vindo do post do criar)
+            // Definir possível erro de processamento (vindo do post do criar)
             model.Erro = (string)TempData["erro-msg"];
 
             // Obter as Categorias
@@ -68,11 +68,11 @@ namespace Blog.Controllers.Admin
             // Alimentar o model com as categorias que serão colocadas no <select> do formulário
             foreach (var categoriaEntity in listaCategorias)
             {
-                var categoriaAdminetiquetas = new CategoriaAdminEtiquetas();
-                categoriaAdminetiquetas.IdCategoria = categoriaEntity.Id;
-                categoriaAdminetiquetas.NomeCategoria = categoriaEntity.Nome;
+                var categoriaAdminEtiquetas = new CategoriaAdminEtiquetas();
+                categoriaAdminEtiquetas.IdCategoria = categoriaEntity.Id;
+                categoriaAdminEtiquetas.NomeCategoria = categoriaEntity.Nome;
 
-                model.Categorias.Add(categoriaAdminetiquetas);
+                model.Categorias.Add(categoriaAdminEtiquetas);
             }
 
             return View(model);
@@ -82,7 +82,7 @@ namespace Blog.Controllers.Admin
         public RedirectToActionResult Criar(AdminEtiquetasCriarRequestModel request)
         {
             var nome = request.Nome;
-            var idCategoria = Convert.ToInt32(request.IdCategoria);
+            var idCategoria = request.IdCategoria;
 
             try
             {
@@ -102,14 +102,14 @@ namespace Blog.Controllers.Admin
         {
             AdminEtiquetasEditarViewModel model = new AdminEtiquetasEditarViewModel();
 
-            // Obter etiqueta a Editar
+            // Obter etiqueta a editar
             var etiquetaAEditar = _etiquetaOrmService.ObterEtiquetaPorId(id);
             if (etiquetaAEditar == null)
             {
                 return RedirectToAction("Listar");
             }
 
-            // Define possível erro no processamento (vindo do post do criar)
+            // Definir possível erro de processamento (vindo do post do criar)
             model.Erro = (string)TempData["erro-msg"];
 
             // Obter as Categorias
@@ -118,14 +118,14 @@ namespace Blog.Controllers.Admin
             // Alimentar o model com as categorias que serão colocadas no <select> do formulário
             foreach (var categoriaEntity in listaCategorias)
             {
-                var categoriaAdminetiquetas = new CategoriaAdminEtiquetas();
-                categoriaAdminetiquetas.IdCategoria = categoriaEntity.Id;
-                categoriaAdminetiquetas.NomeCategoria = categoriaEntity.Nome;
+                var categoriaAdminEtiquetas = new CategoriaAdminEtiquetas();
+                categoriaAdminEtiquetas.IdCategoria = categoriaEntity.Id;
+                categoriaAdminEtiquetas.NomeCategoria = categoriaEntity.Nome;
 
-                model.Categorias.Add(categoriaAdminetiquetas);
+                model.Categorias.Add(categoriaAdminEtiquetas);
             }
 
-            // alimentar o model com os dados da etiqueta a ser editada
+            // Alimentar o model com os dados da etiqueta a ser editada
             model.IdEtiqueta = etiquetaAEditar.Id;
             model.NomeEtiqueta = etiquetaAEditar.Nome;
             model.IdCategoriaEtiqueta = etiquetaAEditar.Categoria.Id;
@@ -139,7 +139,7 @@ namespace Blog.Controllers.Admin
         {
             var id = request.Id;
             var nome = request.Nome;
-            var idCategoria = Convert.ToInt32(request.IdCategoria);
+            var idCategoria = request.IdCategoria;
 
             try
             {
@@ -159,23 +159,22 @@ namespace Blog.Controllers.Admin
         {
             AdminEtiquetasRemoverViewModel model = new AdminEtiquetasRemoverViewModel();
 
-            // Obter etiqueta para Remoção
+            // Obter etiqueta a remover
             var etiquetaARemover = _etiquetaOrmService.ObterEtiquetaPorId(id);
             if (etiquetaARemover == null)
             {
                 return RedirectToAction("Listar");
             }
 
-            // Define possível erro no processamento (vindo do post do criar)
+            // Definir possível erro de processamento (vindo do post do criar)
             model.Erro = (string)TempData["erro-msg"];
 
-            // Alimentar o model com os dados da etiqueta a ser removida
+            // Alimentar o model com os dados da etiqueta a ser editada
             model.IdEtiqueta = etiquetaARemover.Id;
             model.NomeEtiqueta = etiquetaARemover.Nome;
             model.TituloPagina += model.NomeEtiqueta;
 
             return View(model);
-
         }
 
         [HttpPost]
@@ -189,11 +188,11 @@ namespace Blog.Controllers.Admin
             }
             catch (Exception exception)
             {
-                TempData["Erro-msg"] = exception.Message;
+                TempData["erro-msg"] = exception.Message;
                 return RedirectToAction("Remover", new { id = id });
             }
+
             return RedirectToAction("Listar");
         }
-
     }
 }

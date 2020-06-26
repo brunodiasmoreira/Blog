@@ -7,27 +7,21 @@ namespace Blog.ViewModels.Admin
 {
     public class AdminPostagensEditarViewModel : ViewModelAreaAdministrativa
     {
+        public int Id { get; set; }
+        public string Titulo { get; set; }
+        public string Descricao { get; set; }
+        public int IdCategoria { get; set; }
+        public string Texto { get; set; }
+        public string DataExibicao { get; set; }
+
         public string Erro { get; set; }
 
-        public int IdPostagem { get; set; }
-
-        public string NomePostagem { get; set; }
-
-        public DateTime DataPostagem { get; set; }
-
-        public int IdCategoriaPostagem { get; set; }
-
-        public int IdAutorPostagem { get; set; }
-
-        public ICollection<CategoriaAdminPostagens> Categorias { get; set; }
-
-        public ICollection<AutorAdminPostagens> Autores { get; set; }
+        public ICollection<CategoriaAdminPostagens> CategoriasPostagem { get; set; }
 
         public AdminPostagensEditarViewModel()
         {
-            TituloPagina = "Criar nova Postagem";
-            Categorias = new List<CategoriaAdminPostagens>();
-            Autores = new List<AutorAdminPostagens>();
+            TituloPagina = "Editar Postagem: ";
+            CategoriasPostagem = new List<CategoriaAdminPostagens>();
         }
     }
 }
